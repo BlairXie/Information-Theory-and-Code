@@ -26,7 +26,11 @@ def probability_dic(rlc):
     '''
     构造概率字典，符号为字典的键，其概率为字典的值
     '''
+<<<<<<< HEAD
     unique, count = np.unique(rlc,return_counts = True) #统计每个数字及其频数
+=======
+    unique, count = np.unique(a_rlc,return_counts = True) #统计每个数字及其频数
+>>>>>>> 2119f610ed35a7fc1ca3f05d341e490bce7afd4f
     print('符号',unique,'频数',count)
     prob = {} #概率统计字典初始化
 
@@ -117,9 +121,12 @@ if __name__ == '__main__':
     np.random.seed(102)#伪随机数种子
     a = np.random.choice([0,1], size=1000, p=[0.3,0.7])#随机生成序列a，每一次出现0,1的概率分别为0.3,0.7
     print ('二进制序列(这里显示前20)',a[0:20])
+<<<<<<< HEAD
 
     # a = ['a','a','a','a','b','b','b','c','c','d','e','e','e','e','e','f','f','f','f','f','f','f']
 
+=======
+>>>>>>> 2119f610ed35a7fc1ca3f05d341e490bce7afd4f
     a_rlc = rlc_encode(a)#a的游程编码
     print ('游程码(这里显示前20)')
     pprint.pprint(a_rlc[0:20])
@@ -137,8 +144,11 @@ if __name__ == '__main__':
         a_rlc_huffman.append(a_huffman_encode_list[i])
     print('游程码转Huffman码(这里显示前20)')
     print(a_rlc_huffman[0:20])
+<<<<<<< HEAD
     # print('Huffman编码结果：')
     # print(a_rlc_huffman)
+=======
+>>>>>>> 2119f610ed35a7fc1ca3f05d341e490bce7afd4f
 
     huffman_rlc = []#a的Huffman解码
     for i in a_rlc_huffman:
@@ -236,6 +246,7 @@ file_compressed = 'lzw_compressed.txt'
 lzw_compress(file_uncompressed, file_compressed)
 file_uncompressed = 'lzw_uncompressed.txt'
 decompress(file_compressed,file_uncompressed)
+<<<<<<< HEAD
 
 # Arithmetic Coding
 # a = ['d','a','c','a','b']
@@ -254,3 +265,5 @@ for i in a:# Arithmetic Coding
     start_pre = start_now
     # print start_now,end_now
 print start_now,end_now
+=======
+>>>>>>> 2119f610ed35a7fc1ca3f05d341e490bce7afd4f
