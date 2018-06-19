@@ -23,8 +23,23 @@ turbo_code = 2 * turbo_code - ones(size(turbo_code));
 turbo_code;
 size(turbo_code);
 %%%%%%%%%%%%%%%%%%%%%%%%channel%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-snr = 1;
-turbo_code_r = awgn(turbo_code,snr, 'measured');
+% snr = 1;
+% turbo_code_r = awgn(turbo_code,snr, 'measured');
+%%%%%%%%%%%%%%%%%%%%%%%channel2%%%%%%%%%%%%%%%%%%%%%%%%%%%
+pe = 0.05
+channel = randsrc(1,L_total*3,[1 0;pe 1-pe]);
+sum(channel)
+turbo_code_r = turbo_code;
+for k = 1:L_total*3
+    i = channel(1,k);
+    if i == 1
+        turbo_code_r(1,k) = -turbo_code_r(1,k);
+    end
+    
+end
+channel(1:2:20);
+turbo_code(1:2:20);
+turbo_code_r(1:2:20);
 %%%%%%%%%%%%%%%%%%%%%%%turbo decoder%%%%%%%%%%%%%%%%%%%%%%%
 r = turbo_demultiplex(turbo_code_r, alpha);
 
