@@ -1,7 +1,9 @@
 clear
+close all 
 %%%%%%%%%%%%%%%%%%%%%%%turbo encoder%%%%%%%%%%%%%%%%%%%%%%%
 g = [ 1 0 1 1;
        1 1 0 1 ];%generator 
+s = rng(10);
 x = randi([0,1],1,1000);
 % x = [1 0 1 0 1 1 0 1] %origin message 
 L_total = length(x);
@@ -23,8 +25,26 @@ turbo_code = 2 * turbo_code - ones(size(turbo_code));
 turbo_code;
 size(turbo_code);
 %%%%%%%%%%%%%%%%%%%%%%%%channel%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-snr = 1;
+err_rate_list = [];
+snr_list = [0:1:200]/100;
+for snr = snr_list(1:end)
+% snr = 1;
 turbo_code_r = awgn(turbo_code,snr, 'measured');
+%%%%%%%%%%%%%%%%%%%%%%%channel2%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% pe = 0.05
+% channel = randsrc(1,L_total*3,[1 0;pe 1-pe]);
+% sum(channel)
+% turbo_code_r = turbo_code;
+% for k = 1:L_total*3
+%     i = channel(1,k);
+%     if i == 1
+%         turbo_code_r(1,k) = -turbo_code_r(1,k);
+%     end
+%     
+% end
+% channel(1:2:20)
+% turbo_code(1:2:20)
+% turbo_code_r(1:2:20)
 %%%%%%%%%%%%%%%%%%%%%%%turbo decoder%%%%%%%%%%%%%%%%%%%%%%%
 r = turbo_demultiplex(turbo_code_r, alpha);
 
@@ -36,8 +56,10 @@ L_a(alpha) = L_e;  %L_a是解交织码
 L_all = logmapo(r(1,:),g,L_a,2);
 
 xhat = (sign(L_all)+1)/2;
-err_n = sum(xor(xhat, x))
-err_rate = err_n/L_total
+err_n = sum(xor(xhat, x));
+err_rate = err_n/L_total;
+
+
 L_e = L_all- 2*r(1,1:2:2*L_total) - L_a;  % extrinsic info.
 
 
@@ -46,5 +68,16 @@ L_all = logmapo(r(2,:), g, L_a, 2);  % complete info.
 L_e = L_all - 2*r(2,1:2:2*L_total) - L_a;  % extrinsic info.
 xhat2(alpha) = (sign(L_all)+1)/2;
 
-err_n2 = sum(xor(xhat2, x))
-err_rate2 = err_n2/L_total
+err_n2 = sum(xor(xhat2, x));
+err_rate2 = err_n2/L_total;
+
+err_rate_list = [err_rate_list err_rate2];
+
+end
+figure;
+
+err_rate_list
+plot(snr_list, err_rate_list);
+xlabel('snr');
+ylabel('error rate');
+saveas(gcf,'1.tif')
